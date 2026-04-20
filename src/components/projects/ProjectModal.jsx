@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
 const categoryLabelMap = {
@@ -12,15 +12,15 @@ const ProjectModal = ({ project, onClose }) => {
   const gallery = project?.gallery || [];
   const currentImage = gallery[currentIndex];
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (gallery.length === 0) return;
     setCurrentIndex((prev) => (prev === 0 ? gallery.length - 1 : prev - 1));
-  };
+  }, [gallery.length]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (gallery.length === 0) return;
     setCurrentIndex((prev) => (prev === gallery.length - 1 ? 0 : prev + 1));
-  };
+  }, [gallery.length]);
 
   useEffect(() => {
     setCurrentIndex(0);
@@ -40,7 +40,7 @@ const ProjectModal = ({ project, onClose }) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [project, onClose, gallery.length]);
+  }, [project, onClose, handleNext, handlePrev]);
 
   if (!project) return null;
 
@@ -250,18 +250,10 @@ const Layout = styled.div`
 
 const Left = styled.div`
   padding: 12px 12px 20px;
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 8px 6px 16px;
-  }
 `;
 
 const Right = styled.div`
   padding: 24px 24px 28px;
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 8px 10px 18px;
-  }
 `;
 
 const MainImageWrap = styled.div`
@@ -343,7 +335,6 @@ const MetaInfo = styled.div`
   align-items: center;
   gap: 8px;
   font-size: ${({ theme }) => theme.fontSize.caption};
-  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.colors.subText};
 `;
 
@@ -358,19 +349,13 @@ const Title = styled.h3`
   margin-bottom: 12px;
   font-size: ${({ theme }) => theme.fontSize.h1};
   font-weight: ${({ theme }) => theme.fontWeight.extrabold};
-  line-height: 1.2;
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    font-size: ${({ theme }) => theme.fontSize.h2};
-  }
 `;
 
 const Subtitle = styled.p`
   margin-bottom: 28px;
   font-size: ${({ theme }) => theme.fontSize.body};
-  font-weight: ${({ theme }) => theme.fontWeight.medium};
-  line-height: 1.8;
   color: ${({ theme }) => theme.colors.subText};
+  line-height: 1.8;
 `;
 
 const InfoGrid = styled.div`
