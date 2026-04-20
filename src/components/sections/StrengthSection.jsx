@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import SectionTitle from "../common/SectionTitle";
+import Reveal from "../common/Reveal";
 
 const strengths = [
   {
@@ -24,18 +25,23 @@ const StrengthSection = () => {
   return (
     <Section id="strength">
       <Inner>
-        <SectionTitle
-          label="Strength"
-          title="문제를 정리하고, 전달 가능한 구조로 바꾸는 것이 제 강점입니다"
-          description="디자인 감각, 구조화 능력, 화면 구현, 협업 경험을 바탕으로 프로젝트를 끝까지 연결합니다."
-        />
+        <Reveal>
+          <SectionTitle
+            label="Strength"
+            title="문제를 정리하고, 전달 가능한 구조로 바꾸는 것이 제 강점입니다"
+            description="디자인 감각, 구조화 능력, 화면 구현, 협업 경험을 바탕으로 프로젝트를 끝까지 연결합니다."
+          />
+        </Reveal>
 
         <Grid>
-          {strengths.map((item) => (
-            <Card key={item.title}>
-              <CardTitle>{item.title}</CardTitle>
-              <CardDesc>{item.desc}</CardDesc>
-            </Card>
+          {strengths.map((item, index) => (
+            <Reveal key={item.title} delay={index * 0.06}>
+              <Card>
+                <IconWrap>{String(index + 1).padStart(2, "0")}</IconWrap>
+                <CardTitle>{item.title}</CardTitle>
+                <CardDesc>{item.desc}</CardDesc>
+              </Card>
+            </Reveal>
           ))}
         </Grid>
       </Inner>
@@ -46,10 +52,10 @@ const StrengthSection = () => {
 export default StrengthSection;
 
 const Section = styled.section`
-  padding: 120px 24px;
+  padding: ${({ theme }) => theme.layout.sectionY} 32px;
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 80px 20px;
+    padding: ${({ theme }) => theme.layout.sectionYMobile} 20px;
   }
 `;
 
@@ -60,7 +66,7 @@ const Inner = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
@@ -69,29 +75,50 @@ const Grid = styled.div`
 `;
 
 const Card = styled.div`
-  padding: 36px;
-  background: ${({ theme }) => theme.colors.surface};
+  padding: 32px;
   border-radius: ${({ theme }) => theme.radius.lg};
+  background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  box-shadow: ${({ theme }) => theme.shadow.card};
+  box-shadow: ${({ theme }) => theme.shadow.soft};
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: ${({ theme }) => theme.colors.borderStrong};
+    box-shadow: ${({ theme }) => theme.shadow.medium};
+  }
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
     padding: 24px;
   }
 `;
 
+const IconWrap = styled.div`
+  width: 48px;
+  height: 48px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: ${({ theme }) => theme.colors.primarySoft};
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: ${({ theme }) => theme.fontSize.caption};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+`;
+
 const CardTitle = styled.h3`
   margin-bottom: 14px;
-  font-size: 24px;
-  line-height: 1.3;
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    font-size: 20px;
-  }
+  font-size: ${({ theme }) => theme.fontSize.h3};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
 const CardDesc = styled.p`
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: ${({ theme }) => theme.fontSize.body};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  line-height: 1.8;
   color: ${({ theme }) => theme.colors.subText};
 `;

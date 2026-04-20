@@ -1,10 +1,24 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <HeaderWrapper>
+    <HeaderWrapper $scrolled={scrolled}>
       <Inner>
         <Logo href="#hero">김경선 Portfolio</Logo>
+
         <Nav>
           <NavLink href="#about">About</NavLink>
           <NavLink href="#strength">Strength</NavLink>
@@ -22,35 +36,47 @@ export default Header;
 const HeaderWrapper = styled.header`
   position: sticky;
   top: 0;
-  z-index: 1000;
-  background: rgba(249, 250, 251, 0.88);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  z-index: 1200;
+  width: 100%;
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    backdrop-filter 0.25s ease;
+  background: ${({ $scrolled }) =>
+    $scrolled ? "rgba(246, 247, 251, 0.76)" : "rgba(246, 247, 251, 0.18)"};
+  backdrop-filter: ${({ $scrolled }) =>
+    $scrolled ? "blur(14px)" : "blur(4px)"};
+  border-bottom: 1px solid
+    ${({ theme, $scrolled }) =>
+      $scrolled ? theme.colors.border : "transparent"};
+  box-shadow: ${({ theme, $scrolled }) =>
+    $scrolled ? theme.shadow.soft : "none"};
 `;
 
 const Inner = styled.div`
   max-width: ${({ theme }) => theme.layout.width};
   margin: 0 auto;
-  padding: 18px 24px;
+  padding: 20px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 16px 20px;
+    padding: 18px 20px;
   }
 `;
 
 const Logo = styled.a`
-  font-size: 20px;
-  font-weight: 800;
+  font-size: ${({ theme }) => theme.fontSize.title};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
   letter-spacing: -0.02em;
 `;
 
 const Nav = styled.nav`
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
@@ -58,11 +84,30 @@ const Nav = styled.nav`
 `;
 
 const NavLink = styled.a`
-  font-size: 15px;
+  position: relative;
+  font-size: ${({ theme }) => theme.fontSize.caption};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
   color: ${({ theme }) => theme.colors.subText};
   transition: color 0.2s ease;
 
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 100%;
+    height: 2px;
+    background: ${({ theme }) => theme.colors.primary};
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
   }
 `;

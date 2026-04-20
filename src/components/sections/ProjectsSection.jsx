@@ -1,61 +1,77 @@
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import SectionTitle from "../common/SectionTitle";
+import Reveal from "../common/Reveal";
+import ProjectCard from "../projects/ProjectCard";
+import ProjectModal from "../projects/ProjectModal";
 import { projects } from "../../data/projects";
 
+const filterOptions = [
+  { key: "all", label: "전체" },
+  { key: "development", label: "개발" },
+  { key: "design", label: "디자인" },
+];
+
 const ProjectsSection = () => {
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+
+    return () => document.body.classList.remove("modal-open");
+  }, [selectedProject]);
+
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === "all") return projects;
+    return projects.filter((project) => project.category === activeFilter);
+  }, [activeFilter]);
+
   return (
     <Section id="projects">
       <Inner>
-        <SectionTitle
-          label="Projects"
-          title="대표 프로젝트를 구조와 문제 해결 중심으로 보여줍니다"
-          description="단순 결과물 나열이 아니라, 어떤 문제를 어떻게 정리했고 어떤 구조로 해결했는지를 중심으로 설명합니다."
-        />
+        <Reveal>
+          <SectionTitle
+            label="Projects"
+            title="개발과 디자인 프로젝트를 같은 구조 안에서 분리해 보여줍니다"
+            description="전체, 개발, 디자인 카테고리로 나누어 프로젝트를 관리하고, 카드를 클릭하면 상세 내용을 확인할 수 있도록 구성했습니다."
+          />
+        </Reveal>
 
-        <ProjectList>
-          {projects.map((project, index) => (
-            <ProjectCard key={project.title}>
-              <VisualArea>
-                <MainImage src={project.thumbnail} alt={project.imageAlt} />
-                <SubImage src={project.detailImage} alt={project.imageAlt} />
-              </VisualArea>
+        <Reveal delay={0.06}>
+          <FilterRow>
+            <Segment>
+              {filterOptions.map((option) => (
+                <FilterButton
+                  key={option.key}
+                  type="button"
+                  $active={activeFilter === option.key}
+                  onClick={() => setActiveFilter(option.key)}
+                >
+                  {option.label}
+                </FilterButton>
+              ))}
+            </Segment>
+          </FilterRow>
+        </Reveal>
 
-              <ContentArea>
-                <Top>
-                  <ProjectIndex>
-                    {String(index + 1).padStart(2, "0")}
-                  </ProjectIndex>
-                  <ProjectTitle>{project.title}</ProjectTitle>
-                  <ProjectSummary>{project.summary}</ProjectSummary>
-                </Top>
-
-                <Body>
-                  <InfoBlock>
-                    <Label>문제</Label>
-                    <Text>{project.problem}</Text>
-                  </InfoBlock>
-
-                  <InfoBlock>
-                    <Label>역할</Label>
-                    <Text>{project.role}</Text>
-                  </InfoBlock>
-
-                  <InfoBlock>
-                    <Label>결과</Label>
-                    <Text>{project.result}</Text>
-                  </InfoBlock>
-                </Body>
-
-                <TagList>
-                  {project.tags.map((tag) => (
-                    <Tag key={tag}>{tag}</Tag>
-                  ))}
-                </TagList>
-              </ContentArea>
-            </ProjectCard>
+        <Grid>
+          {filteredProjects.map((project, index) => (
+            <Reveal key={project.id} delay={(index % 4) * 0.05}>
+              <ProjectCard project={project} onClick={setSelectedProject} />
+            </Reveal>
           ))}
-        </ProjectList>
+        </Grid>
       </Inner>
+
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </Section>
   );
 };
@@ -63,10 +79,10 @@ const ProjectsSection = () => {
 export default ProjectsSection;
 
 const Section = styled.section`
-  padding: 120px 24px;
+  padding: ${({ theme }) => theme.layout.sectionY} 32px;
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 80px 20px;
+    padding: ${({ theme }) => theme.layout.sectionYMobile} 20px;
   }
 `;
 
@@ -75,140 +91,57 @@ const Inner = styled.div`
   margin: 0 auto;
 `;
 
-const ProjectList = styled.div`
+const FilterRow = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 32px;
+  justify-content: flex-start;
+  margin-bottom: 32px;
 `;
 
-const ProjectCard = styled.article`
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap: 28px;
-  padding: 28px;
-  background: ${({ theme }) => theme.colors.surface};
-  border-radius: ${({ theme }) => theme.radius.xl};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  box-shadow: ${({ theme }) => theme.shadow.card};
-
-  @media (max-width: ${({ theme }) => theme.media.tablet}) {
-    grid-template-columns: 1fr;
-  }
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 20px;
-    gap: 20px;
-  }
-`;
-
-const VisualArea = styled.div`
-  display: grid;
-  grid-template-rows: 1fr 0.7fr;
-  gap: 16px;
-
-  @media (max-width: ${({ theme }) => theme.media.tablet}) {
-    grid-template-rows: auto auto;
-  }
-`;
-
-const BaseImage = styled.img`
-  width: 100%;
-  object-fit: cover;
-  border-radius: ${({ theme }) => theme.radius.lg};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  background: ${({ theme }) => theme.colors.surfaceAlt};
-`;
-
-const MainImage = styled(BaseImage)`
-  min-height: 320px;
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    min-height: 220px;
-  }
-`;
-
-const SubImage = styled(BaseImage)`
-  min-height: 180px;
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    min-height: 160px;
-  }
-`;
-
-const ContentArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const Top = styled.div`
-  margin-bottom: 24px;
-`;
-
-const ProjectIndex = styled.p`
-  margin-bottom: 10px;
-  font-size: 14px;
-  font-weight: 800;
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const ProjectTitle = styled.h3`
-  margin-bottom: 12px;
-  font-size: 32px;
-  line-height: 1.2;
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    font-size: 24px;
-  }
-`;
-
-const ProjectSummary = styled.p`
-  font-size: 18px;
-  line-height: 1.6;
-  color: ${({ theme }) => theme.colors.subText};
-
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    font-size: 16px;
-  }
-`;
-
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const InfoBlock = styled.div`
-  padding: 20px;
-  background: ${({ theme }) => theme.colors.surfaceAlt};
-  border-radius: ${({ theme }) => theme.radius.md};
-`;
-
-const Label = styled.p`
-  margin-bottom: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const Text = styled.p`
-  font-size: 15px;
-  line-height: 1.75;
-  color: ${({ theme }) => theme.colors.text};
-`;
-
-const TagList = styled.div`
-  display: flex;
+const Segment = styled.div`
+  display: inline-flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 24px;
+  padding: 8px;
+  border-radius: ${({ theme }) => theme.radius.pill};
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: ${({ theme }) => theme.shadow.soft};
 `;
 
-const Tag = styled.span`
-  padding: 10px 14px;
+const FilterButton = styled.button`
+  padding: 12px 18px;
   border-radius: ${({ theme }) => theme.radius.pill};
-  background: ${({ theme }) => theme.colors.surfaceAlt};
-  color: ${({ theme }) => theme.colors.subText};
-  font-size: 14px;
-  font-weight: 500;
+  background: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : "transparent"};
+  color: ${({ theme, $active }) => ($active ? "#fff" : theme.colors.subText)};
+  font-size: ${({ theme }) => theme.fontSize.caption};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    color: ${({ theme, $active }) => ($active ? "#fff" : theme.colors.text)};
+  }
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px;
+
+  @media (max-width: ${({ theme }) => theme.media.desktop}) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: ${({ theme }) => theme.media.tablet}) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 `;

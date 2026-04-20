@@ -13,10 +13,17 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: ${({ theme }) => theme.colors.background};
+    background:
+      radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%),
+      radial-gradient(circle at top left, rgba(37, 99, 235, 0.05), transparent 18%),
+      ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
-    line-height: 1.5;
+    line-height: 1.6;
     word-break: keep-all;
+  }
+
+  body.modal-open {
+    overflow: hidden;
   }
 
   a {
@@ -44,7 +51,21 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background: rgba(49, 130, 246, 0.15);
+    background: rgba(37, 99, 235, 0.14);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d9dde4;
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
   }
 `;
 

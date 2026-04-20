@@ -1,62 +1,61 @@
 import styled from "styled-components";
 import SectionTitle from "../common/SectionTitle";
+import Reveal from "../common/Reveal";
 
-const experiences = [
+const strengths = [
   {
-    period: "2016.03 - 2021.02",
-    title: "호서대학교 산업디자인학과 졸업",
-    desc: "산업디자인을 전공하며 시각적 표현과 사용자 관점의 문제 해결 방식을 익혔습니다.",
+    title: "서비스 구조 설계",
+    desc: "복잡한 요구사항을 메뉴트리, 사용자 시나리오, 화면 우선순위로 정리하고 기능 흐름을 구조화합니다.",
   },
   {
-    period: "2022 - 2024",
-    title: "디자인 실무 경험",
-    desc: "팔팔토이, 더조은, 덴탈비서에서 브랜드, 홈페이지, 상세페이지, SNS 콘텐츠, 홍보물 제작 경험을 쌓았습니다.",
+    title: "프론트엔드 구현",
+    desc: "React 기반으로 공통 레이아웃, 관리자 화면, 생산 대시보드, 이력 추적 등 다양한 UI를 구현합니다.",
   },
   {
-    period: "2025.08 - 2026.02",
-    title: "JAVA 활용 스마트 팩토리 MES 웹솔루션 과정",
-    desc: "Java, DB 모델링, Spring, 프론트엔드, MES 도메인 지식을 학습하며 서비스 구현 역량을 확장했습니다.",
+    title: "데이터 시각화",
+    desc: "KPI, 생산 현황, 설비 상태, 추적 흐름처럼 복잡한 정보를 한눈에 이해할 수 있도록 정리합니다.",
   },
   {
-    period: "2026.02 - 2026.04",
-    title: "심층 데이터 분석을 통한 서비스 솔루션 개발자 과정",
-    desc: "데이터 분석, 시각화, 빅데이터 아키텍처, 인사이트 도출과 서비스 개선 관점을 학습했습니다.",
+    title: "협업과 문서화",
+    desc: "WBS, 일정 관리, 요구사항 정리, 발표자료 제작과 시연 준비까지 프로젝트 전반의 흐름을 연결합니다.",
   },
 ];
 
-const ExperienceSection = () => {
+const StrengthSection = () => {
   return (
-    <Section id="experience">
+    <Section id="strength">
       <Inner>
-        <SectionTitle
-          label="Experience"
-          title="디자인 실무와 개발 학습, 프로젝트 경험을 함께 쌓아왔습니다"
-          description="디자인에서 시작해 개발과 데이터 시각화, 협업과 문서화까지 영역을 확장해왔습니다."
-        />
+        <Reveal>
+          <SectionTitle
+            label="Strength"
+            title="문제를 정리하고, 전달 가능한 구조로 바꾸는 것이 제 강점입니다"
+            description="디자인 감각, 구조화 능력, 화면 구현, 협업 경험을 바탕으로 프로젝트를 끝까지 연결합니다."
+          />
+        </Reveal>
 
-        <List>
-          {experiences.map((item) => (
-            <Item key={item.title}>
-              <Period>{item.period}</Period>
-              <Content>
-                <ItemTitle>{item.title}</ItemTitle>
-                <ItemDesc>{item.desc}</ItemDesc>
-              </Content>
-            </Item>
+        <Grid>
+          {strengths.map((item, index) => (
+            <Reveal key={item.title} delay={index * 0.06}>
+              <Card>
+                <IconWrap>{String(index + 1).padStart(2, "0")}</IconWrap>
+                <CardTitle>{item.title}</CardTitle>
+                <CardDesc>{item.desc}</CardDesc>
+              </Card>
+            </Reveal>
           ))}
-        </List>
+        </Grid>
       </Inner>
     </Section>
   );
 };
 
-export default ExperienceSection;
+export default StrengthSection;
 
 const Section = styled.section`
-  padding: 120px 24px;
+  padding: ${({ theme }) => theme.layout.sectionY} 32px;
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 80px 20px;
+    padding: ${({ theme }) => theme.layout.sectionYMobile} 20px;
   }
 `;
 
@@ -65,48 +64,61 @@ const Inner = styled.div`
   margin: 0 auto;
 `;
 
-const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`;
-
-const Item = styled.div`
+const Grid = styled.div`
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
-  padding: 28px 32px;
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radius.lg};
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
     grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 22px 20px;
   }
 `;
 
-const Period = styled.p`
-  font-size: 15px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.primary};
-`;
+const Card = styled.div`
+  padding: 32px;
+  border-radius: ${({ theme }) => theme.radius.lg};
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: ${({ theme }) => theme.shadow.soft};
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
 
-const Content = styled.div``;
-
-const ItemTitle = styled.h3`
-  margin-bottom: 10px;
-  font-size: 22px;
-  line-height: 1.4;
+  &:hover {
+    transform: translateY(-4px);
+    border-color: ${({ theme }) => theme.colors.borderStrong};
+    box-shadow: ${({ theme }) => theme.shadow.medium};
+  }
 
   @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    font-size: 19px;
+    padding: 24px;
   }
 `;
 
-const ItemDesc = styled.p`
-  font-size: 16px;
-  line-height: 1.7;
+const IconWrap = styled.div`
+  width: 48px;
+  height: 48px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: ${({ theme }) => theme.colors.primarySoft};
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: ${({ theme }) => theme.fontSize.caption};
+  font-weight: ${({ theme }) => theme.fontWeight.extrabold};
+`;
+
+const CardTitle = styled.h3`
+  margin-bottom: 14px;
+  font-size: ${({ theme }) => theme.fontSize.h3};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+`;
+
+const CardDesc = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.body};
+  font-weight: ${({ theme }) => theme.fontWeight.medium};
+  line-height: 1.8;
   color: ${({ theme }) => theme.colors.subText};
 `;
