@@ -21,6 +21,9 @@ export const projects = [
       "기획, WBS/PPT, 일정 관리, 최종 발표 및 시연 영상 제작을 맡았고, Admin(BE)에서는 사원 관리·공정 관리·작업/생산 지시 로직을 구현했으며, Production(FE)에서는 생산 관리와 KPI 통합 대시보드를 구현했습니다.",
     outcome:
       "관리자와 작업자 흐름을 구분한 메뉴 구조를 설계하고, 자재·재고·생산·공정·품질·추적 영역을 정리했습니다. 대시보드와 제조 이력 추적 화면을 통해 복잡한 제조 프로세스를 한눈에 이해할 수 있는 구조로 구체화했습니다.",
+    tech: ["React", "Spring Boot", "MySQL", "Axios", "JWT"],
+    scope: ["기획 및 WBS", "Admin(BE)", "Production(FE)", "발표 자료 및 시연"],
+    points: ["메뉴 구조 설계", "KPI 대시보드 구현", "관리자/작업자 흐름 분리"],
     tags: ["React", "Dashboard", "MES", "Admin", "Traceability"],
   },
   {
@@ -44,6 +47,9 @@ export const projects = [
       "서비스 기획, 관리자 구조 설계, 대시보드 화면 정리, KPI 정의, 발표 자료 및 사용자용 메시지 구조화를 중심으로 프로젝트를 정리했습니다.",
     outcome:
       "가격 관리, 재고 관리, 통계, 대시보드를 중심으로 화면 구조를 정리하고 사용자와 발표자 모두가 이해하기 쉬운 서비스 흐름으로 재구성했습니다.",
+    tech: ["React", "Planning", "Dashboard", "Figma"],
+    scope: ["서비스 구조 설계", "관리자 화면 기획", "발표용 스토리라인 정리"],
+    points: ["가격/재고 흐름 정리", "KPI 정의", "사용자 관점 메시지 개선"],
     tags: ["Planning", "Dashboard", "Admin", "AI Service"],
   },
   {
@@ -66,6 +72,9 @@ export const projects = [
       "서비스 구조 정리, 결과 화면 구성, 발표용 흐름 정리, 사용자 관점의 메시지 개선을 중심으로 프로젝트를 다듬었습니다.",
     outcome:
       "기술 중심의 결과를 사용자 친화적인 화면 흐름으로 바꾸며 설명력 있는 UI 구조와 시각화의 중요성을 강화했습니다.",
+    tech: ["React", "UX Writing", "Visualization"],
+    scope: ["결과 화면 구성", "발표 흐름 정리", "서비스 구조 개선"],
+    points: ["복잡한 결과 단순화", "화면 설명력 강화", "시각적 전달력 개선"],
     tags: ["AI", "Visualization", "UX Writing", "Planning"],
   },
   {
@@ -89,6 +98,9 @@ export const projects = [
       "홈페이지와 상세페이지 디자인, SNS 이미지 콘텐츠 제작, DID 광고 영상 기획 및 제작을 담당했습니다.",
     outcome:
       "브랜드 메시지를 디지털 접점 전반에 일관되게 적용하며 웹과 콘텐츠 디자인의 전달력을 강화했습니다.",
+    tech: ["Photoshop", "Illustrator", "Web Design"],
+    scope: ["홈페이지 디자인", "상세페이지", "SNS 콘텐츠", "DID 영상"],
+    points: ["타깃 맞춤형 표현", "일관된 브랜드 메시지", "디지털 접점 확장"],
     tags: ["Web Design", "Detail Page", "SNS", "DID"],
   },
   {
@@ -107,6 +119,9 @@ export const projects = [
     contribution: "패키지 디자인, 회사 소개 PPT, 브로슈어 제작을 담당했습니다.",
     outcome:
       "브랜드의 시각적 일관성을 강화하고 대외 커뮤니케이션 자료의 완성도를 높였습니다.",
+    tech: ["Photoshop", "Illustrator", "PPT"],
+    scope: ["패키지 디자인", "회사 소개 자료", "브로슈어"],
+    points: ["브랜드 일관성 강화", "전달력 높은 자료 구성", "대외 신뢰도 향상"],
     tags: ["Package", "Branding", "PPT", "Brochure"],
   },
   {
@@ -130,6 +145,9 @@ export const projects = [
       "자수 및 캐릭터 디자인, 제품 디자인 기획, 브랜드 로고 제작, 자사 홈페이지 디자인 업데이트를 맡았습니다.",
     outcome:
       "브랜드의 개성과 메시지를 시각적으로 정리하며 실무형 브랜딩 경험을 쌓았습니다.",
+    tech: ["Illustrator", "Branding", "Web Design"],
+    scope: ["브랜드 아이덴티티", "캐릭터/로고", "홈페이지 업데이트"],
+    points: ["브랜드 개성 시각화", "실무형 브랜딩 경험", "온라인 표현 확장"],
     tags: ["Branding", "Character", "Logo", "Website"],
   },
 ];

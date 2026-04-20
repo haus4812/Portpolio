@@ -1,4 +1,5 @@
-export const theme = {
+export const lightTheme = {
+  mode: "light",
   colors: {
     background: "#f6f7fb",
     surface: "#ffffff",
@@ -11,6 +12,8 @@ export const theme = {
     borderStrong: "#d7dce2",
     dark: "#111111",
     overlay: "rgba(15, 23, 42, 0.56)",
+    header: "rgba(246, 247, 251, 0.76)",
+    headerTransparent: "rgba(246, 247, 251, 0.18)",
   },
   layout: {
     width: "1280px",
@@ -29,6 +32,66 @@ export const theme = {
     soft: "0 10px 30px rgba(15, 23, 42, 0.06)",
     medium: "0 18px 50px rgba(15, 23, 42, 0.10)",
     strong: "0 24px 60px rgba(15, 23, 42, 0.16)",
+  },
+  fontSize: {
+    display: "60px",
+    h1: "40px",
+    h2: "28px",
+    h3: "24px",
+    title: "20px",
+    body: "16px",
+    caption: "14px",
+    small: "12px",
+  },
+  fontWeight: {
+    regular: 400,
+    medium: 500,
+    semibold: 600,
+    bold: 700,
+    extrabold: 800,
+  },
+  media: {
+    desktop: "1280px",
+    tablet: "960px",
+    mobile: "768px",
+    small: "480px",
+  },
+};
+
+export const darkTheme = {
+  mode: "dark",
+  colors: {
+    background: "#0f172a",
+    surface: "#111827",
+    surfaceAlt: "#1f2937",
+    text: "#f8fafc",
+    subText: "#94a3b8",
+    primary: "#60a5fa",
+    primarySoft: "rgba(96, 165, 250, 0.16)",
+    border: "#243041",
+    borderStrong: "#334155",
+    dark: "#ffffff",
+    overlay: "rgba(2, 6, 23, 0.72)",
+    header: "rgba(15, 23, 42, 0.72)",
+    headerTransparent: "rgba(15, 23, 42, 0.22)",
+  },
+  layout: {
+    width: "1280px",
+    gutter: "32px",
+    sectionY: "140px",
+    sectionYMobile: "96px",
+  },
+  radius: {
+    sm: "16px",
+    md: "20px",
+    lg: "28px",
+    xl: "36px",
+    pill: "999px",
+  },
+  shadow: {
+    soft: "0 10px 30px rgba(0, 0, 0, 0.24)",
+    medium: "0 18px 50px rgba(0, 0, 0, 0.30)",
+    strong: "0 24px 60px rgba(0, 0, 0, 0.38)",
   },
   fontSize: {
     display: "60px",

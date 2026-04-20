@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import ThemeToggle from "../common/ThemeToggle";
 
-const Header = () => {
+const Header = ({ isDarkMode, onToggleTheme }) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -19,13 +20,17 @@ const Header = () => {
       <Inner>
         <Logo href="#hero">김경선 Portfolio</Logo>
 
-        <Nav>
-          <NavLink href="#about">About</NavLink>
-          <NavLink href="#strength">Strength</NavLink>
-          <NavLink href="#projects">Projects</NavLink>
-          <NavLink href="#experience">Experience</NavLink>
-          <NavLink href="#contact">Contact</NavLink>
-        </Nav>
+        <RightArea>
+          <Nav>
+            <NavLink href="#about">About</NavLink>
+            <NavLink href="#strength">Strength</NavLink>
+            <NavLink href="#projects">Projects</NavLink>
+            <NavLink href="#experience">Experience</NavLink>
+            <NavLink href="#contact">Contact</NavLink>
+          </Nav>
+
+          <ThemeToggle isDarkMode={isDarkMode} onToggle={onToggleTheme} />
+        </RightArea>
       </Inner>
     </HeaderWrapper>
   );
@@ -43,8 +48,8 @@ const HeaderWrapper = styled.header`
     box-shadow 0.25s ease,
     border-color 0.25s ease,
     backdrop-filter 0.25s ease;
-  background: ${({ $scrolled }) =>
-    $scrolled ? "rgba(246, 247, 251, 0.76)" : "rgba(246, 247, 251, 0.18)"};
+  background: ${({ theme, $scrolled }) =>
+    $scrolled ? theme.colors.header : theme.colors.headerTransparent};
   backdrop-filter: ${({ $scrolled }) =>
     $scrolled ? "blur(14px)" : "blur(4px)"};
   border-bottom: 1px solid
@@ -71,6 +76,12 @@ const Logo = styled.a`
   font-size: ${({ theme }) => theme.fontSize.title};
   font-weight: ${({ theme }) => theme.fontWeight.extrabold};
   letter-spacing: -0.02em;
+`;
+
+const RightArea = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 18px;
 `;
 
 const Nav = styled.nav`

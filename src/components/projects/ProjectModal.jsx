@@ -9,35 +9,40 @@ const categoryLabelMap = {
 const ProjectModal = ({ project, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const gallery = project?.gallery || [];
+  const currentImage = gallery[currentIndex];
+
+  const handlePrev = () => {
+    if (gallery.length === 0) return;
+    setCurrentIndex((prev) => (prev === 0 ? gallery.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    if (gallery.length === 0) return;
+    setCurrentIndex((prev) => (prev === gallery.length - 1 ? 0 : prev + 1));
+  };
+
   useEffect(() => {
     setCurrentIndex(0);
   }, [project]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (!project) return;
+    if (!project) return undefined;
 
+    const handleKeyDown = (e) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") handleNext();
       if (e.key === "ArrowLeft") handlePrev();
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  });
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [project, onClose, gallery.length]);
 
   if (!project) return null;
-
-  const gallery = project.gallery || [];
-  const currentImage = gallery[currentIndex];
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? gallery.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev === gallery.length - 1 ? 0 : prev + 1));
-  };
 
   return (
     <Overlay onClick={onClose}>
@@ -92,6 +97,35 @@ const ProjectModal = ({ project, onClose }) => {
             <Title>{project.title}</Title>
             <Subtitle>{project.subtitle}</Subtitle>
 
+            <InfoGrid>
+              <InfoCard>
+                <InfoLabel>사용 기술</InfoLabel>
+                <InfoList>
+                  {(project.tech || []).map((item) => (
+                    <InfoItem key={item}>{item}</InfoItem>
+                  ))}
+                </InfoList>
+              </InfoCard>
+
+              <InfoCard>
+                <InfoLabel>작업 범위</InfoLabel>
+                <InfoList>
+                  {(project.scope || []).map((item) => (
+                    <InfoItem key={item}>{item}</InfoItem>
+                  ))}
+                </InfoList>
+              </InfoCard>
+
+              <InfoCard>
+                <InfoLabel>기여 포인트</InfoLabel>
+                <InfoList>
+                  {(project.points || []).map((item) => (
+                    <InfoItem key={item}>{item}</InfoItem>
+                  ))}
+                </InfoList>
+              </InfoCard>
+            </InfoGrid>
+
             <SectionBlock>
               <SectionLabel>프로젝트 소개</SectionLabel>
               <SectionText>{project.summary}</SectionText>
@@ -113,7 +147,7 @@ const ProjectModal = ({ project, onClose }) => {
             </SectionBlock>
 
             <TagList>
-              {project.tags.map((tag) => (
+              {(project.tags || []).map((tag) => (
                 <Tag key={tag}>{tag}</Tag>
               ))}
             </TagList>
@@ -337,6 +371,44 @@ const Subtitle = styled.p`
   font-weight: ${({ theme }) => theme.fontWeight.medium};
   line-height: 1.8;
   color: ${({ theme }) => theme.colors.subText};
+`;
+
+const InfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const InfoCard = styled.div`
+  padding: 18px 16px;
+  border-radius: ${({ theme }) => theme.radius.md};
+  background: ${({ theme }) => theme.colors.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const InfoLabel = styled.p`
+  margin-bottom: 12px;
+  font-size: ${({ theme }) => theme.fontSize.small};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const InfoList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const InfoItem = styled.p`
+  font-size: ${({ theme }) => theme.fontSize.caption};
+  font-weight: ${({ theme }) => theme.fontWeight.semibold};
+  line-height: 1.6;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 const SectionBlock = styled.div`
